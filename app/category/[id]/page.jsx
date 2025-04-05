@@ -41,10 +41,10 @@ export default function Category() {
       });
 
     // Rafraîchir les annonces Adsense après chaque changement de page
-    const refreshAds = () => {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    };
-    refreshAds();
+    // const refreshAds = () => {
+    //   (window.adsbygoogle = window.adsbygoogle || []).push({});
+    // };
+    // refreshAds();
 
     if (page === 1) {
       // Supprimer la variable `page` si l'on est sur la première page
