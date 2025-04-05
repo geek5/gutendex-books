@@ -4,7 +4,12 @@ export default function Adsense() {
   useEffect(() => {
     // Rafraîchir les annonces après chaque changement de page
     const refreshAds = () => {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      const adElements = document.querySelectorAll('.adsbygoogle');
+      adElements.forEach(element => {
+        if (!element.innerHTML) {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      });
     };
 
     // Rafraîchir dès que le composant est monté
