@@ -22,8 +22,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="fr">
       
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* Google AdSense Script */}
         <script
           async
@@ -42,7 +43,6 @@ export default function RootLayout({ children }) {
           `}
         </script>
       
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Navbar />
         {children}
         <Footer />
