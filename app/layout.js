@@ -24,7 +24,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1803218881232491" crossorigin="anonymous"></script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CXBM5K6LR"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
+        gtag('config', 'G-6CXBM5K6LR');
+      </script>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
