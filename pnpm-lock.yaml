@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@ctrl/react-adsense':
+        specifier: ^1.8.0
+        version: 1.8.0
       '@radix-ui/react-dialog':
         specifier: ^1.1.6
         version: 1.1.6(@types/react@19.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -66,6 +69,9 @@ packages:
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
+
+  '@ctrl/react-adsense@1.8.0':
+    resolution: {integrity: sha512-c95s60v8WYlPgdeZV8gn80jTQdeNSCxHaZcZqNirlm24y/vceHafUcp0t8qemGV+tikKtSAl3vCDVA43jk9DAw==}
 
   '@emnapi/runtime@1.4.0':
     resolution: {integrity: sha512-64WYIf4UYcdLnbKn/umDlNjQDSS8AgZrI/R9+x5ilkUVFxXcA1Ebl+gQLc/6mERA4407Xof0R7wEyEuj091CVw==}
@@ -1103,6 +1109,10 @@ packages:
 snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
+
+  '@ctrl/react-adsense@1.8.0':
+    dependencies:
+      tslib: 2.8.1
 
   '@emnapi/runtime@1.4.0':
     dependencies:
