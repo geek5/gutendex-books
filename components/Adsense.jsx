@@ -3,17 +3,19 @@ import { useEffect } from "react";
 export default function Adsense() {
   useEffect(() => {
     // Rafraîchir les annonces après chaque changement de page
-    // const refreshAds = () => {
-    //   const adElements = document.querySelectorAll('.adsbygoogle');
-    //   adElements.forEach(element => {
-    //     if (!element.innerHTML) {
-    //       (window.adsbygoogle = window.adsbygoogle || []).push({});
-    //     }
-    //   });
-    // };
+    const refreshAds = () => {
+      const adElements = document.querySelectorAll('.adsbygoogle');
+      adElements.forEach(element => {
+        if (!element.innerHTML) {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      });
+    };
 
-    // // Rafraîchir dès que le composant est monté
-    // refreshAds();
+    // Rafraîchir dès que le composant est monté
+    refreshAds();
+
+    
 
     return () => {
       // Optionnel: Effacez les annonces lors du démontage du composant
