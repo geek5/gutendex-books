@@ -23,7 +23,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <Head>
+      
         {/* Google AdSense Script */}
         <script
           async
@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
             gtag('config', 'G-6CXBM5K6LR');
           `}
         </script>
-      </Head>
+      
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Navbar />
         {children}
