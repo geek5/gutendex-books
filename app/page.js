@@ -126,7 +126,7 @@ export default function Home() {
                   </p>
                   <div className="flex flex-col gap-2">
                     <Button variant="outline" asChild>
-                      <Link href={`/book/${book.id}`}>Voir les détails</Link>
+                      <Link href={`/livre/${book.id}`}>Voir les détails</Link>
                     </Button>
                   </div>
                 </CardContent>

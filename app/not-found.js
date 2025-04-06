@@ -64,7 +64,7 @@ function NotFoundPage() {
                     ({book.authors[0]?.birth_year}–{book.authors[0]?.death_year})
                   </p>
                   <Button variant="outline" asChild>
-                    <Link href={`/book/${book.id}`}>Voir le livre</Link>
+                    <Link href={`/livre/${book.id}`}>Voir le livre</Link>
                   </Button>
                 </CardContent>
               </Card>

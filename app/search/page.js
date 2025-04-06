@@ -63,7 +63,7 @@ import Adsense from "../../components/Adsense"; // Assurez-vous que le chemin es
                   </p>
                   <div className="flex flex-col gap-2">
                     <Button variant="outline" asChild>
-                      <Link href={`/book/${book.id}`}>Voir les détails</Link>
+                      <Link href={`/livre/${book.id}`}>Voir les détails</Link>
                     </Button>
                   </div>
                 </CardContent>
