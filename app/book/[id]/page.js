@@ -37,10 +37,9 @@ export default function BookDetailPage() {
   }
   if (!book) return <p className="p-6 text-xl text-red-600">Livre non trouvé</p>;
 
-  const epubLink = book.formats["application/epub+zip"];
-  const pdfLink = book.formats["application/pdf"];
-  const imageUrl = book.formats["image/jpeg"];
-
+  const epubLink = book.formats?.["application/epub+zip"];
+  const pdfLink = book.formats?.["application/pdf"];
+  const imageUrl = book.formats?.["image/jpeg"];
   return (
     <div>
       <Adsense />
@@ -57,7 +56,8 @@ export default function BookDetailPage() {
           )}
           <h1 className="text-3xl font-bold text-center">{book.title}</h1>
           <p className="text-md text-gray-700">
-            {book.authors.map((a) => a.name).join(", ")} ({book.authors[0]?.birth_year}–{book.authors[0]?.death_year})
+            {book.authors?.map((a) => a.name).join(", ")} 
+            ({book.authors?.[0]?.birth_year}–{book.authors?.[0]?.death_year})
           </p>
           <Adsense />
           <p className="text-gray-600 text-justify leading-relaxed max-w-xl">
