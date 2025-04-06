@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
@@ -110,37 +110,33 @@ export default function Home() {
         <Adsense />
 
         {books.map((book, index) => (
-          <div key={book.id}>
-            <Card key={book.id} className="rounded-2xl shadow-md p-4">
-              <CardContent>
-                <div className="mb-2">
-                  <Image
-                    src={book.formats["image/jpeg"]}
-                    alt={`Couverture de ${book.title}`}
-                    width={200}
-                    height={300}
-                    className="rounded-xl mx-auto"
-                  />
-                </div>
-                <h2 className="text-xl font-semibold mb-1">{book.title}</h2>
-                <p className="text-sm text-gray-700 mb-2">
-                  {book.authors.map((a) => a.name).join(", ")} ({book.authors[0]?.birth_year}–{book.authors[0]?.death_year})
-                </p>
-                <p className="text-sm text-gray-600 mb-3">
-                  {book.summaries?.[0]?.slice(0, 200)}...
-                </p>
-                <div className="flex flex-col gap-2">
-                  <Button variant="outline" asChild>
-                    <Link href={`/book/${book.id}`}>Voir les détails</Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+          <Fragment key={book.id}>
+            <div>
+              <Card className="rounded-2xl shadow-md p-4">
+                <CardContent>
+                  <div className="mb-2">
+                    <Image src={book.formats["image/jpeg"]} alt={`Couverture de ${book.title}`} width={200} height={300} className="rounded-xl mx-auto" />
+                  </div>
+                  <h2 className="text-xl font-semibold mb-1">{book.title}</h2>
+                  <p className="text-sm text-gray-700 mb-2">
+                    {book.authors.map((a) => a.name).join(", ")} ({book.authors[0]?.birth_year}–{book.authors[0]?.death_year})
+                  </p>
+                  <p className="text-sm text-gray-600 mb-3">
+                    {book.summaries?.[0]?.slice(0, 200)}...
+                  </p>
+                  <div className="flex flex-col gap-2">
+                    <Button variant="outline" asChild>
+                      <Link href={`/book/${book.id}`}>Voir les détails</Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-            {/* Affiche un AdSense après chaque groupe de 3 éléments */}
             {(index + 1) % 5 === 0 && <Adsense />}
-          </div>
+          </Fragment>
         ))}
+
       </main>
 
       <div className="flex justify-center gap-4">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from 'react';
 
@@ -47,36 +47,31 @@ import Adsense from "../../components/Adsense"; // Assurez-vous que le chemin es
     <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {books.length > 0 ? (
         books.map((book, index) => (
-            <>
-            <Card className="rounded-2xl shadow-md p-4">
+            <Fragment key={book.id}>
+            <div>
+              <Card className="rounded-2xl shadow-md p-4">
                 <CardContent>
-                <div className="mb-2">
-                    <Image
-                    src={book.formats["image/jpeg"]}
-                    alt={`Couverture de ${book.title}`}
-                    width={200}
-                    height={300}
-                    className="rounded-xl mx-auto"
-                    />
-                </div>
-                <h2 className="text-xl font-semibold mb-1">{book.title}</h2>
-                <p className="text-sm text-gray-700 mb-2">
+                  <div className="mb-2">
+                    <Image src={book.formats["image/jpeg"]} alt={`Couverture de ${book.title}`} width={200} height={300} className="rounded-xl mx-auto" />
+                  </div>
+                  <h2 className="text-xl font-semibold mb-1">{book.title}</h2>
+                  <p className="text-sm text-gray-700 mb-2">
                     {book.authors.map((a) => a.name).join(", ")} ({book.authors[0]?.birth_year}–{book.authors[0]?.death_year})
-                </p>
-                <p className="text-sm text-gray-600 mb-3">
+                  </p>
+                  <p className="text-sm text-gray-600 mb-3">
                     {book.summaries?.[0]?.slice(0, 200)}...
-                </p>
-                <div className="flex flex-col gap-2">
+                  </p>
+                  <div className="flex flex-col gap-2">
                     <Button variant="outline" asChild>
-                    <Link href={`/book/${book.id}`}>Voir les détails</Link>
+                      <Link href={`/book/${book.id}`}>Voir les détails</Link>
                     </Button>
-                </div>
+                  </div>
                 </CardContent>
-            </Card>
+              </Card>
+            </div>
 
-            {/* Affiche un AdSense après chaque groupe de 3 éléments */}
-            {(index + 1) % 3 === 0 && <Adsense />}
-            </>
+            {(index + 1) % 5 === 0 && <Adsense />}
+          </Fragment>
         ))
         ) : (
         <p className="text-xl text-center text-gray-500">Aucun résultat trouvé pour "{query}".</p>

@@ -1,6 +1,6 @@
 "use client"; // Marque ce fichier comme un composant client uniquement
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment} from "react";
 import { useRouter,useParams } from 'next/navigation';
 
 import Image from "next/image";
@@ -81,17 +81,12 @@ export default function Category() {
         <Adsense />
 
         {books.map((book, index) => (
-          <>
-            <Card key={book.id} className="rounded-2xl shadow-md p-4">
+          <Fragment key={book.id}>
+          <div>
+            <Card className="rounded-2xl shadow-md p-4">
               <CardContent>
                 <div className="mb-2">
-                  <Image
-                    src={book.formats["image/jpeg"]}
-                    alt={`Couverture de ${book.title}`}
-                    width={200}
-                    height={300}
-                    className="rounded-xl mx-auto"
-                  />
+                  <Image src={book.formats["image/jpeg"]} alt={`Couverture de ${book.title}`} width={200} height={300} className="rounded-xl mx-auto" />
                 </div>
                 <h2 className="text-xl font-semibold mb-1">{book.title}</h2>
                 <p className="text-sm text-gray-700 mb-2">
@@ -107,10 +102,10 @@ export default function Category() {
                 </div>
               </CardContent>
             </Card>
+          </div>
 
-            {/* Affiche un AdSense après chaque groupe de 3 éléments */}
-            {(index + 1) % 3 === 0 && <Adsense />}
-          </>
+          {(index + 1) % 5 === 0 && <Adsense />}
+        </Fragment>
         ))}
       </main>
 
