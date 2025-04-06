@@ -10,8 +10,8 @@ export default function AdsenseCom() {
         client="ca-pub-1803218881232491"
         slot="6880003388"
         style={{ display: 'block' }}
-        layout="in-article"
-        format="fluid"
+        format="auto"
+        responsive="true"
       />
     </div>
   );
