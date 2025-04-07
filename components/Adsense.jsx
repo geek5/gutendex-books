@@ -1,18 +1,70 @@
+"use client"; // (optionnel si tu es sur Next.js 13+ app router)
+
+import Router from "next/router";
 import { useEffect } from "react";
-import {Adsense} from '@ctrl/react-adsense';
+import dynamic from "next/dynamic";
 
-export default function AdsenseCom() {
+// Déclare le composant réel de la bannière publicitaire
+const AdsBanner = (props) => {
+  useEffect(() => {
+    const handleRouteChange = () => {
+      const intervalId = setInterval(() => {
+        try {
+          if (window.adsbygoogle) {
+            window.adsbygoogle.push({});
+            clearInterval(intervalId);
+          }
+        } catch (err) {
+          console.error("Error pushing ads: ", err);
+          clearInterval(intervalId);
+        }
+      }, 100);
+      return () => clearInterval(intervalId);
+    };
 
+    handleRouteChange();
+
+    if (typeof window !== "undefined") {
+      Router.events.on("routeChangeComplete", handleRouteChange);
+
+      return () => {
+        Router.events.off("routeChangeComplete", handleRouteChange);
+      };
+    }
+  }, []);
 
   return (
-    <div className="w-full h-full flex items-center justify-center min-w-[250px] max-w-[1200px] min-h-[90px] max-h-[250px]">
-      <Adsense
-        client="ca-pub-1803218881232491"
-        slot="6880003388"
-        style={{ display: 'block' }}
-        format="auto"
-        responsive="true"
-      />
-    </div>
+    <ins
+      className="adsbygoogle adbanner-customize mt-2"
+      style={{
+        display: "block",
+        overflow: "hidden"
+      }}
+      data-ad-slot="6880003388"
+      data-ad-client='"ca-pub-1803218881232491'
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+      {...props}
+    />
   );
-}
+};
+
+// Fais un composant dynamique côté client seulement
+const AdBanner = dynamic(() => Promise.resolve(AdsBanner), {
+  ssr: false,
+});
+
+export default AdBanner;
+
+{/* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1803218881232491"
+     crossorigin="anonymous"></script>
+<!-- ebook detail -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1803218881232491"
+     data-ad-slot="6880003388"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script> */}
