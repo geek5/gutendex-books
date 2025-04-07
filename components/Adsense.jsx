@@ -34,18 +34,14 @@ const AdsBanner = (props) => {
   }, []);
 
   return (
-    <ins
-      className="adsbygoogle adbanner-customize mt-2"
+    <ins class="adsbygoogle"
       style={{
-        display: "block",
-        overflow: "hidden"
+        display: "block"
       }}
+      data-ad-client="ca-pub-1803218881232491"
       data-ad-slot="6880003388"
-      data-ad-client='"ca-pub-1803218881232491'
       data-ad-format="auto"
-      data-full-width-responsive="true"
-      {...props}
-    />
+      data-full-width-responsive="true"/>
   );
 };
 
