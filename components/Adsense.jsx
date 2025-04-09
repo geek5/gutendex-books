@@ -34,7 +34,7 @@ const AdsBanner = (props) => {
   }, []);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex items-center justify-center">
       <ins class="adsbygoogle"
         style={{
           display: "block"
