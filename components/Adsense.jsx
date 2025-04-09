@@ -34,14 +34,16 @@ const AdsBanner = (props) => {
   }, []);
 
   return (
-    <ins class="adsbygoogle"
-      style={{
-        display: "block"
-      }}
-      data-ad-client="ca-pub-1803218881232491"
-      data-ad-slot="6880003388"
-      data-ad-format="auto"
-      data-full-width-responsive="true"/>
+    <div className="w-full h-full">
+      <ins class="adsbygoogle"
+        style={{
+          display: "block"
+        }}
+        data-ad-client="ca-pub-1803218881232491"
+        data-ad-slot="6880003388"
+        data-ad-format="auto"
+        data-full-width-responsive="true"/>
+    </div>
   );
 };
 
