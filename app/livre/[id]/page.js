@@ -1,45 +1,52 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from 'next/link';
-import Adsense from "../../../components/Adsense"; // Assurez-vous que le chemin est correct
+import Adsense from "../../../components/Adsense";
 
+// ✅ SEO Metadata for Next.js 15
+export async function generateMetadata({ params }) {
 
-export default function BookDetailPage() {
-  const params = useParams();
-  const id = Array.isArray(params.id) ? params.id[0] : params.id;
-  const [book, setBook] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { id } = await params
 
-  useEffect(() => {
-    if (!id) return;
-    fetch(`https://gutendex.com/books/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setBook(data);
-        setLoading(false);
-      });
-  }, [id]);
+  const res = await fetch(`https://gutendex.com/books/${id}`);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center p-4 h-screen bg-gray-50">
-        <div className="flex flex-col items-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600 border-solid mb-4"></div>
-          <p className="text-xl font-semibold text-blue-800">Chargement en cours...</p>
-          <p className="text-sm text-gray-500">Veuillez patienter pendant que nous préparons vos livres</p>
-        </div>
-      </div>
-    );
+  if (!res.ok) {
+    return { title: "Livre non trouvé", description: "Ce livre n'a pas été trouvé sur notre plateforme." };
   }
-  if (!book) return <p className="p-6 text-xl text-red-600">Livre non trouvé</p>;
 
+  const book = await res.json();
+
+  return {
+    title: `${book.title} - Téléchargez le livre en EPUB et PDF gratuitement`,
+    description: `Découvrez "${book.title}" de ${book.authors?.map(a => a.name).join(", ")}. Téléchargez le livre au format EPUB ou PDF gratuitement.`,
+    openGraph: {
+      title: `${book.title} - Téléchargez le livre en EPUB et PDF gratuitement`,
+      description: `Découvrez "${book.title}" de ${book.authors?.map(a => a.name).join(", ")}. Téléchargez le livre au format EPUB ou PDF gratuitement.`,
+      images: [
+        {
+          url: book.formats?.["image/jpeg"] || "/default.png",
+          width: 800,
+          height: 600,
+          alt: `Couverture de ${book.title}`,
+        },
+      ],
+    },
+  };
+}
+
+// ✅ Server Component for rendering the page
+export default async function BookDetailPage({ params }) {
+  const id = params.id;
+  const res = await fetch(`https://gutendex.com/books/${id}`);
+
+  if (!res.ok) return notFound();
+
+  const book = await res.json();
   const epubLink = book.formats?.["application/epub+zip"];
   const pdfLink = book.formats?.["application/pdf"];
   const imageUrl = book.formats?.["image/jpeg"];
+
   return (
     <div>
       <Adsense />
