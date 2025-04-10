@@ -5,6 +5,9 @@ import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
+
 import Adsense from "../../../components/Adsense";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
