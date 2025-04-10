@@ -7,23 +7,23 @@ import dynamic from "next/dynamic";
 // Déclare le composant réel de la bannière publicitaire
 const AdsBanner = (props) => {
   useEffect(() => {
-    const handleRouteChange = () => {
-      const intervalId = setInterval(() => {
+    const adContainer = document.querySelector(".adsbygoogle");
+  
+    const tryPushAd = () => {
+      if (adContainer && adContainer.offsetWidth > 0) {
         try {
-          if (window.adsbygoogle) {
-            window.adsbygoogle.push({});
-            clearInterval(intervalId);
-          }
-        } catch (err) {
-          console.error("Error pushing ads: ", err);
-          clearInterval(intervalId);
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+          console.error("Adsbygoogle push failed:", e);
         }
-      }, 100);
-      return () => clearInterval(intervalId);
+      } else {
+        // Retry after a short delay if width is still 0
+        setTimeout(tryPushAd, 200);
+      }
     };
-
-    handleRouteChange();
-
+  
+    tryPushAd();
+  
     if (typeof window !== "undefined") {
       Router.events.on("routeChangeComplete", handleRouteChange);
 
@@ -34,15 +34,18 @@ const AdsBanner = (props) => {
   }, []);
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full max-w-[728px] mx-auto">
       <ins className="adsbygoogle"
         style={{
-          display: "block"
+          display: "block",
+          width: "100%",
+          height: "90px" // optional: set a min height or height for fixed-size ads
         }}
         data-ad-client="ca-pub-1803218881232491"
         data-ad-slot="6880003388"
         data-ad-format="auto"
-        data-full-width-responsive="true"/>
+        data-full-width-responsive="true"
+      />
     </div>
   );
 };
