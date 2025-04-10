@@ -5,30 +5,47 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 
 // Déclare le composant réel de la bannière publicitaire
-useEffect(() => {
-  const adContainer = document.querySelector(".adsbygoogle");
+const AdsBanner = (props) => {
+  useEffect(() => {
+    const handleRouteChange = () => {
+      const intervalId = setInterval(() => {
+        try {
+          if (window.adsbygoogle) {
+            window.adsbygoogle.push({});
+            clearInterval(intervalId);
+          }
+        } catch (err) {
+          console.error("Error pushing ads: ", err);
+          clearInterval(intervalId);
+        }
+      }, 100);
+      return () => clearInterval(intervalId);
+    };
 
-  const tryPushAd = () => {
-    if (adContainer && adContainer.offsetWidth > 0) {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (e) {
-        console.error("Adsbygoogle push failed:", e);
-      }
-    } else {
-      // Retry after a short delay if width is still 0
-      setTimeout(tryPushAd, 200);
+    handleRouteChange();
+
+    if (typeof window !== "undefined") {
+      Router.events.on("routeChangeComplete", handleRouteChange);
+
+      return () => {
+        Router.events.off("routeChangeComplete", handleRouteChange);
+      };
     }
-  };
+  }, []);
 
-  tryPushAd();
-
-  Router.events.on("routeChangeComplete", tryPushAd);
-  return () => {
-    Router.events.off("routeChangeComplete", tryPushAd);
-  };
-}, []);
-
+  return (
+    <div className="w-full h-full flex items-center justify-center">
+      <ins class="adsbygoogle"
+        style={{
+          display: "block"
+        }}
+        data-ad-client="ca-pub-1803218881232491"
+        data-ad-slot="6880003388"
+        data-ad-format="auto"
+        data-full-width-responsive="true"/>
+    </div>
+  );
+};
 
 // Fais un composant dynamique côté client seulement
 const AdBanner = dynamic(() => Promise.resolve(AdsBanner), {
