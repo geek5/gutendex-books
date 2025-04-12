@@ -36,7 +36,7 @@ const AdsBanner = (props) => {
   return (
     <div className="w-full h-full flex items-center justify-center">
       <ins class="adsbygoogle"
-        style={{ display: "block", width: "100%", maxWidth: "728px", maxHeight: "600px", height: "90px" }}
+        style={{ display: "block", width: "100%", maxWidth: "728px", maxHeight: "600px", minHeight: "90px" }}
         data-ad-client="ca-pub-1803218881232491"
         data-ad-slot="6880003388"
         data-ad-format="auto"
