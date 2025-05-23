@@ -9,21 +9,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { majorTopics } from "../lib/constants";
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const majorTopics = [
-    { name: "Histoire", slug: "history" },
-    { name: "Science", slug: "science" },
-    { name: "Philosophie", slug: "philosophy" },
-    { name: "Littérature", slug: "literature" },
-    { name: "Art", slug: "art" },
-    { name: "Technologie", slug: "technology" },
-    { name: "Religion", slug: "religion" },
-    { name: "Politique", slug: "politics" },
-  ];
 
   const handleSearch = (e) => {
     e.preventDefault();

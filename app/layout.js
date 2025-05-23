@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./../components/Navbar";
+import Breadcrumbs from './../components/Breadcrumbs';
 import Footer from "./../components/Footer";
 import Head from 'next/head';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -45,6 +46,7 @@ export default function RootLayout({ children }) {
         </script>
       
         <Navbar />
+        <Breadcrumbs />
         {children}
         <Footer />
         <SpeedInsights />
