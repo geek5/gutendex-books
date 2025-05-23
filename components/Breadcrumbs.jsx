@@ -2,10 +2,24 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react"; // Added Suspense
 import { majorTopics } from "../lib/constants";
 
-const Breadcrumbs = () => {
+// 2. Define a Fallback Component
+const FallbackBreadcrumb = () => (
+  <nav aria-label="breadcrumb" className="border-b border-gray-200 dark:border-gray-700">
+    <ol className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+      <li className="flex items-center">
+        <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline">
+          Accueil
+        </Link>
+      </li>
+    </ol>
+  </nav>
+);
+
+// 3. Create an Inner Component for Dynamic Breadcrumbs (renamed from original Breadcrumbs)
+const DynamicBreadcrumbs = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [breadcrumbs, setBreadcrumbs] = useState([]);
@@ -33,7 +47,7 @@ const Breadcrumbs = () => {
           } else if (segment === "livre") {
             const bookId = pathSegments[++i];
             currentPath += `/${bookId}`;
-            let bookLabel = `Livre: ${bookId}`; // Default label
+            let bookLabel = `Livre: ${bookId}`; 
 
             if (bookTitles[bookId]) {
               bookLabel = bookTitles[bookId];
@@ -46,19 +60,19 @@ const Breadcrumbs = () => {
                 const data = await response.json();
                 if (data && data.title) {
                   setBookTitles(prev => ({ ...prev, [bookId]: data.title }));
-                  // The label will be updated on the next render cycle
-                  // triggered by the state change in bookTitles.
                 } else {
                   setBookTitles(prev => ({ ...prev, [bookId]: `Titre inconnu (${bookId})` }));
-                  // The label will be updated on the next render cycle.
                 }
               } catch (error) {
                 console.error("Failed to fetch book title:", error);
                 setBookTitles(prev => ({ ...prev, [bookId]: `Titre inconnu (${bookId})` }));
-                bookLabel = `Titre inconnu (${bookId})`;
+                // Keep bookLabel as "Chargement du titre..." or "Livre: {bookId}" if error, 
+                // it will be updated to "Titre inconnu" on next render cycle
               } finally {
                 setLoadingBookId(null);
               }
+            } else if (loadingBookId === bookId) {
+                bookLabel = "Chargement du titre..."; // Explicitly keep loading label
             }
             generatedBreadcrumbs.push({ href: currentPath, label: bookLabel });
           }
@@ -81,17 +95,27 @@ const Breadcrumbs = () => {
     };
 
     generateBreadcrumbs();
-  }, [pathname, searchParams, bookTitles]); // Add bookTitles to dependency array
+  }, [pathname, searchParams, bookTitles, loadingBookId]); // Added loadingBookId to dependency array
 
-  if (breadcrumbs.length === 0) {
-    return null;
+  if (breadcrumbs.length === 0 && !pathname) { // Avoid rendering empty if pathname not yet available
+    return null; 
   }
+  // If breadcrumbs has only "Accueil" and pathname is not just "/", it might be loading
+  if (breadcrumbs.length <= 1 && pathname && pathname !== "/") {
+     //This check helps ensure that if dynamic segments are expected, we don't flash an incomplete breadcrumb.
+     //The FallbackBreadcrumb is shown by Suspense initially.
+     //Once hooks are ready, this component renders. If it's still calculating,
+     //it might render just "Accueil". We might want to show nothing or a minimal loading here too,
+     //or rely on Suspense for all loading states.
+     //For now, let's allow it to render what it has.
+  }
+
 
   return (
     <nav aria-label="breadcrumb" className="border-b border-gray-200 dark:border-gray-700">
       <ol className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
         {breadcrumbs.map((breadcrumb, index) => (
-          <li key={breadcrumb.href} className="flex items-center"> {/* Added flex items-center to li for better alignment if needed */}
+          <li key={breadcrumb.href} className="flex items-center">
             {index > 0 && <span className="mx-2 text-gray-400 dark:text-gray-500">/</span>}
             {index === breadcrumbs.length - 1 ? (
               <span className="font-medium text-gray-700 dark:text-gray-200" aria-current="page">
@@ -107,8 +131,24 @@ const Breadcrumbs = () => {
             )}
           </li>
         ))}
+        {(breadcrumbs.length === 0 && pathname) && ( // Show home if path available but breadcrumbs empty
+            <li className="flex items-center">
+                <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline">
+                  Accueil
+                </Link>
+            </li>
+        )}
       </ol>
     </nav>
+  );
+};
+
+// 4. Modify the Main Breadcrumbs Exported Component
+const Breadcrumbs = () => {
+  return (
+    <Suspense fallback={<FallbackBreadcrumb />}>
+      <DynamicBreadcrumbs />
+    </Suspense>
   );
 };
 
