@@ -63,11 +63,13 @@ export default function Home() {
     <>
     
     <Head>
-    <title>Ma page côté client</title>
-    <meta name="description" content="Description dynamique de la page côté client" />
-  </Head>
+      <title>Ma page côté client</title>
+      <meta name="description" content="Description dynamique de la page côté client" />
+    </Head>
 
     <div className="p-6">
+      <div className="max-w-screen-xl mx-auto">
+      
       <div className="p-8 mx-auto text-center">
         <h1 className="text-4xl font-bold mb-6 text-blue-800">Bienvenue sur LivresLib</h1>
         <p className="text-xl text-gray-800 mb-4">
@@ -147,6 +149,7 @@ export default function Home() {
         <Button onClick={() => setPage((p) => p + 1)} disabled={!hasNext}>
           Suivant
         </Button>
+      </div>
       </div>
     </div>
     </>
